@@ -1,10 +1,10 @@
-# point cloud orthographic projection
+# Point Cloud Orthographic Projection with Multiviews
 
 Simple point cloud orthographic projection, support projection to XY, YZ, ZX planes.
 
 ### Introduction
 
-Some time it is useful to get the orthographic projection of a point cloud. Ortho projection can remove the camera distortion. Multiview projection can provide extra information for deep learning tasks.
+Some time it is useful to get the orthographic projection of a point cloud. Ortho projection can remove the camera distortion. Multiview projections can provide extra information for deep learning tasks.
 
 ![ortho-proj-vis](https://i.imgur.com/mhKxr5d.png)
 
@@ -30,6 +30,6 @@ UBC3V dataset, link: https://github.com/ashafaei/ubc3v
 
 ### TO-DO
 
-Load PCD data.
+Loading PCD data.
 
 PCA analysis and OBB.

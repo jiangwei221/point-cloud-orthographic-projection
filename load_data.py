@@ -113,6 +113,5 @@ class UBC3VDataLoader(DepthMapDataLoader):
 
 
 if __name__ == '__main__':
-    maya_camera = cameras.MayaCamera()
     loader = UBC3VDataLoader()
     test_png = loader.load_depth_map_from_png('./sample_data/test/1/images/depthRender/Cam1/mayaProject.000001.png')

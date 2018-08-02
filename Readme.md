@@ -6,7 +6,7 @@ Simple point cloud orthographic projection, support projection to XY, YZ, ZX pla
 
 Some time it is useful to get the orthographic projection of a point cloud. Ortho projection can remove the camera distortion. Multiview projection can provide extra information for deep learning tasks.
 
-![ortho-proj-vis](https://imgur.com/mhKxr5d)
+![ortho-proj-vis](https://i.imgur.com/mhKxr5d.png)
 
 ### Usage
 

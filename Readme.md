@@ -10,7 +10,7 @@ Some time it is useful to get the orthographic projection of a point cloud. Orth
 
 ### Usage
 
-It requires pypcd package, if you are using python3, please istall the version from [pypcd](https://github.com/klintan/pypcd). klintan fixed the cStringIO issue in the original version.
+It requires pypcd package, if you are using python3, please install [this version of pypcd](https://github.com/klintan/pypcd). klintan fixed the [cStringIO issue](https://github.com/dimatura/pypcd/pull/9) in the original version.
 
 Run point_cloud_ortho_projector.py for simple visualization.
 

@@ -28,7 +28,7 @@ class PointCloudVisualizer():
         ax = fig.add_subplot(111, projection='3d')
         return fig
 
-    def plot_pc(self, pc, fig):
+    def plot_pc(self, pc, fig, color='r'):
         #show pc using matplotlib
         ax = plt.gca()
 
@@ -36,7 +36,7 @@ class PointCloudVisualizer():
         pc_y = pc[:, 1]
         pc_z = pc[:, 2]
 
-        ax.scatter(pc_x[1::self.skip], pc_y[1::self.skip], pc_z[1::self.skip], c='r', marker='o', s=1)
+        ax.scatter(pc_x[1::self.skip], pc_y[1::self.skip], pc_z[1::self.skip], c=color, marker='o', s=1)
         ax.set_xlabel('X Label')
         ax.set_ylabel('Y Label')
         ax.set_zlabel('Z Label')

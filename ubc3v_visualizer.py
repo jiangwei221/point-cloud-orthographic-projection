@@ -35,7 +35,7 @@ class UBC3VVisualizer(DepthMapVisualizaer):
         transformation_mat_4x4d = np.matmul(translate_mat_4x4d, rot_mat_4x4d)
 
         world_pc = point_list_to_homo(pc * default_lookat_3d).dot(transformation_mat_4x4d.T)[:, :-1]
-
+        print('world_pc', world_pc.shape)
         return world_pc
 
     def transform_joints_to_camera_space(self, joints, ex_cam):
@@ -60,7 +60,7 @@ class UBC3VVisualizer(DepthMapVisualizaer):
 
     def plot_joints(self, joints, fig):
         ax = fig.gca()
-        ax.scatter(joints[:, 0], joints[:, 1], joints[:, 2], c='b', marker='^', s=10)
+        ax.scatter(joints[:, 0], joints[:, 1], joints[:, 2], c='y', marker='^', s=10)
         #draw skeleton
         bone_x = []
         bone_y = []
@@ -75,7 +75,7 @@ class UBC3VVisualizer(DepthMapVisualizaer):
             bone_y.append(joints[edges[i+1]][1])
             bone_z.append(joints[edges[i+1]][2])
 
-            ax.plot(bone_x, bone_y, bone_z, c='b')
+            ax.plot(bone_x, bone_y, bone_z, c='y')
 
             bone_x = []
             bone_y = []
@@ -93,10 +93,14 @@ class UBC3VVisualizer(DepthMapVisualizaer):
         print(pc_list[0].shape)
         for i in range(len(pc_list)):
             world_pc.append(self.transform_pc_to_world_space(pc_list[i], ex_cam_list[i]))
-        world_pc = np.array(world_pc)
-        print(world_pc.shape)
-        world_pc = world_pc.reshape((-1, 3))
-        self.plot_pc(world_pc, fig)
+        # world_pc = np.array(world_pc)
+        # world_pc = np.concatenate((a, b), axis=0)
+        # print(world_pc.shape)
+        # world_pc = world_pc.reshape((-1, 3))
+        colors = ['r', 'g', 'b']
+        for i, pc in enumerate(world_pc):
+            self.plot_pc(pc, fig, color=colors[i])
+        # self.plot_pc(world_pc, fig)
         self.show_figure()
 
     def show_pc_fusion_w_joints(self, pc_list, ex_cam_list, joints):
@@ -105,10 +109,14 @@ class UBC3VVisualizer(DepthMapVisualizaer):
         print(pc_list[0].shape)
         for i in range(len(pc_list)):
             world_pc.append(self.transform_pc_to_world_space(pc_list[i], ex_cam_list[i]))
-        world_pc = np.array([world_pc])
-        print(world_pc.shape)
-        world_pc = world_pc.reshape((-1, 3))
-        self.plot_pc(world_pc, fig)
+        # world_pc = np.array(world_pc)
+        # print(world_pc.shape)
+        # print('world_pc', world_pc.shape, world_pc[0].shape)
+        # world_pc = world_pc.reshape((-1, 3))
+        # self.plot_pc(world_pc, fig)
+        colors = ['r', 'g', 'b']
+        for i, pc in enumerate(world_pc):
+            self.plot_pc(pc, fig, color=colors[i])
         self.plot_joints(joints, fig)
         self.show_figure()
 
@@ -146,10 +154,11 @@ if __name__ == '__main__':
     test_pc_3 = test_ubc3v.generate_pc(test_depth_map_3, bb1)    
 
     # test_pc_fusion.append(test_pc_1)
-    test_pc_fusion = np.array([ test_pc_3])
+    test_pc_fusion = np.array([test_pc_1, test_pc_2, test_pc_3])
     print(test_pc_fusion.shape)
     # test_pc_fusion = test_pc_fusion.reshape((-1, 3))
     print(test_pc_fusion[0].shape)
+    print('test_pc_fusion', test_pc_fusion.shape)
     # test_pc_fusion.append(test_pc_2)
     # test_pc_fusion.append(test_pc_3)
 
@@ -160,10 +169,10 @@ if __name__ == '__main__':
     ex_cam_2 = test_ubc3v.loader.get_ex_cam_by_index(ex_cam_list, 1, 0)
     ex_cam_3 = test_ubc3v.loader.get_ex_cam_by_index(ex_cam_list, 2, 0)
 
-    ex_cam_fushion = np.array([  ex_cam_3])
-    # ex_cam_fushion = []
-    # ex_cam_fushion.append(ex_cam_1)
-    # ex_cam_fushion.append(ex_cam_2)
-    # ex_cam_fushion.append(ex_cam_3)
+    # ex_cam_fushion = np.array([  ex_cam_3])
+    ex_cam_fushion = []
+    ex_cam_fushion.append(ex_cam_1)
+    ex_cam_fushion.append(ex_cam_2)
+    ex_cam_fushion.append(ex_cam_3)
 
     test_ubc3v.show_pc_fusion_w_joints(test_pc_fusion, ex_cam_fushion, test_ubc3v.loader.get_joints_by_index(joints_gt, 0))

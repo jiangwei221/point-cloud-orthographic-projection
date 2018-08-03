@@ -6,8 +6,10 @@ jiang wei
 import cameras
 try:
     from .load_data import DepthMapDataLoader
+    from .load_data import PCDDataLoader
 except Exception:
     from load_data import DepthMapDataLoader
+    from load_data import PCDDataLoader
 import bounding_box
 
 from mpl_toolkits.mplot3d import Axes3D
@@ -47,6 +49,7 @@ class PointCloudVisualizer():
         plt.show()
 
     def show_pc(self, pc):
+        print(pc.shape)
         fig = self.init_figure()
         self.plot_pc(pc, fig)
         self.show_figure()
@@ -57,10 +60,35 @@ class PointCloudVisualizer():
 #TO-DO: PCDVisualizer
 class PCDVisualizer(PointCloudVisualizer):
     
-    def __init__(self):
-        pass
-        PointCloudVisualizer.__init__(self)
+    def __init__(self, skip=None, near=0, far=inf, rotate=0):
+        if skip == None:
+            PointCloudVisualizer.__init__(self)
+        else:
+            PointCloudVisualizer.__init__(self, skip)
+        self.loader = PCDDataLoader()
+        self.near = near
+        self.far = far
+        self.rotate = rotate
+    
+    def show_pc_from_pcd(self, pcd_path, bounding_box=None):
+        pc = self.loader.load_pc_from_pcd(pcd_path)
+        pc = self.generate_pc(pc, bounding_box=bounding_box)
+        self.show_pc(pc)
+        
+    def generate_pc(self, in_pc, bounding_box=None):
+        #point cloud unit: m
+        index_pos = np.where((in_pc[: ,2] <= self.far) & (in_pc[: ,2] >= self.near))
+        out_pc = in_pc[index_pos]
 
+        if bounding_box==None:
+            pass
+        else:
+            assert(hasattr(bounding_box, 'crop_point_cloud'))
+            out_pc = bounding_box.crop_point_cloud(out_pc)
+
+        return out_pc
+
+    
 class DepthMapVisualizaer(PointCloudVisualizer):
 
     def __init__(self, camera, skip=None, near=0, far=inf, rotate=0):
@@ -83,7 +111,7 @@ class DepthMapVisualizaer(PointCloudVisualizer):
 
     def show_pc_from_depth_map_file(self, file_path, bounding_box=None):
         depth_map = self.loader.load_depth_map_from_file(file_path)
-        pc = self.generate_pc(depth_map, bounding_box)
+        pc = self.generate_pc(depth_map, bounding_box=bounding_box)
         self.show_pc(pc)
 
     def generate_pc(self, depth_map, bounding_box=None):
@@ -122,3 +150,7 @@ if __name__ == '__main__':
     maya_camera = cameras.MayaCamera()
     show_pc = DepthMapVisualizaer(maya_camera, skip=5, near=1, far=3)
     show_pc.show_pc_from_depth_map_file('./sample_data/test/1/images/depthRender/Cam1/mayaProject.000001.png', bounding_box=bb1)
+
+    bb2 = bounding_box.AABB(center=[0,0,0], half_xyz=[0.2, 0.1, 1])
+    vis_pcd = PCDVisualizer()
+    vis_pcd.show_pc_from_pcd('./sample_data/bunny.pcd')

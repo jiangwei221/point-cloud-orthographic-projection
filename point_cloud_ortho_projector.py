@@ -8,9 +8,10 @@ import bounding_box
 import cameras
 try:
     from .point_cloud_visualizer import DepthMapVisualizaer
+    from .point_cloud_visualizer import PCDVisualizer
 except Exception:
     from point_cloud_visualizer import DepthMapVisualizaer
-
+    from point_cloud_visualizer import PCDVisualizer
 import math
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
@@ -163,3 +164,17 @@ if __name__ == '__main__':
     test_projector.show_sampled_image(final_xy_image)
     test_projector.show_sampled_image(final_yz_image)
     test_projector.show_sampled_image(final_zx_image)
+
+    bb2 = bounding_box.AABB(center=[0,0,0], half_xyz=[0.2, 0.2, 0.3])
+    pc_visualizer2 = PCDVisualizer(skip=1, near=0, far=3)
+
+    test_projector2 = PointCloudOrthoProjector(density=300, image_size=(252, 252), pc_visualizer=pc_visualizer2)
+    test_pc = test_projector2.pc_visualizer.loader.load_pc_from_pcd('./sample_data/bunny.pcd')
+
+    test_pc = test_projector2.pc_visualizer.generate_pc(test_pc, bb2)
+    test_projector2.pc_visualizer.show_pc(test_pc)
+
+    final_xy_image, final_yz_image, final_zx_image = test_projector2.sample_image_w_pyramid(test_pc, bb2)
+    test_projector2.show_sampled_image(final_xy_image)
+    test_projector2.show_sampled_image(final_yz_image)
+    test_projector2.show_sampled_image(final_zx_image)

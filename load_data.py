@@ -8,11 +8,22 @@ import csv
 import numpy as np
 import cameras
 from scipy import misc
+from pypcd import pypcd
 
 class PCDDataLoader():
     
     def __init__(self):
         pass
+
+    def load_pc_from_pcd(self, pcd_path):
+        #the original pypcd read the pcd file into a numpy array with customized dtype
+        #here we use simple n*3 array to represent a point cloud
+        pc = pypcd.PointCloud.from_path(pcd_path)
+        pc2 = np.zeros((pc.pc_data.shape[0], 3))
+        pc2[:,0] = pc.pc_data[:]['x']
+        pc2[:,1] = pc.pc_data[:]['y']
+        pc2[:,2] = pc.pc_data[:]['z']
+        return pc2
 
 class DepthMapDataLoader():
     
@@ -115,3 +126,8 @@ class UBC3VDataLoader(DepthMapDataLoader):
 if __name__ == '__main__':
     loader = UBC3VDataLoader()
     test_png = loader.load_depth_map_from_png('./sample_data/test/1/images/depthRender/Cam1/mayaProject.000001.png')
+
+    loader2 = PCDDataLoader()
+    test_pc = loader2.load_pc_from_pcd('./sample_data/bunny.pcd')
+    test_pc = np.array(test_pc)
+    print(test_pc.shape) 

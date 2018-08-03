@@ -10,6 +10,8 @@ Some time it is useful to get the orthographic projection of a point cloud. Orth
 
 ### Usage
 
+It requires pypcd package, if you are using python3, please istall the version from [pypcd](https://github.com/klintan/pypcd). klintan fixed the cStringIO issue in the original version.
+
 Run point_cloud_ortho_projector.py for simple visualization.
 
 ### Data
@@ -22,14 +24,14 @@ In the <sample_data> dir, I put several images from UBC3V dataset.
 
 For PCD data:
 
-Loading PCD data is a TO-DO.
+I used pypcd to load the PCD data.
+
+In the <sample_data> dir, I put bunny PCD file in ascii.
 
 ### Thanks
 
 UBC3V dataset, link: https://github.com/ashafaei/ubc3v
 
 ### TO-DO
-
-Loading PCD data.
 
 PCA analysis and OBB.

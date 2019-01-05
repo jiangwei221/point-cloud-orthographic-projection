@@ -147,9 +147,12 @@ if __name__ == '__main__':
     bb1 = bounding_box.AABB(center=[0,0,2.2], half_xyz=[1, 1, 1])
     print(bb1.unit())
     
-    maya_camera = cameras.MayaCamera()
-    show_pc = DepthMapVisualizaer(maya_camera, skip=5, near=1, far=3)
-    show_pc.show_pc_from_depth_map_file('./sample_data/test/1/images/depthRender/Cam1/mayaProject.000001.png', bounding_box=bb1)
+    # maya_camera = cameras.MayaCamera()
+    # show_pc = DepthMapVisualizaer(maya_camera, skip=5, near=1, far=3)
+    # show_pc.show_pc_from_depth_map_file('./sample_data/test/1/images/depthRender/Cam1/mayaProject.000001.png', bounding_box=bb1)
+    maya_camera = cameras.HandsegCamera()
+    show_pc = DepthMapVisualizaer(maya_camera, skip=5, near=0, far=7.9)
+    show_pc.show_pc_from_depth_map_file('./sample_data/fre_0001.png')
 
     bb2 = bounding_box.AABB(center=[0,0,0], half_xyz=[0.2, 0.1, 1])
     vis_pcd = PCDVisualizer()

@@ -62,3 +62,26 @@ class MayaCamera(BaseCamera):
 
     def name(self):
         return 'MayaCamera'
+
+class HandsegCamera(BaseCamera):
+
+    '''
+    simulated kinect depth camera in Maya renderer(used in ubc3v)
+    note:
+    % The 8-bit band encompasses the range 50 to 800 cm.
+    output_args = (double(input_args(:, :, 1))./255 .* (800-50) + 50)*1.03;
+    '''
+
+    def __init__(self):
+        BaseCamera.__init__(self, image_size=(256, 256),cx=128, cy=128, fx=368.096588, fy=368.096588)
+
+    def convert_png_to_depth_map(self, png_image):
+        assert(png_image.shape == self.image_size)
+        #convert 0 to 255
+        index_pos = np.where(png_image==0)
+        png_image[index_pos] = 255
+        depth_map = (png_image/255.0 * (800 - 50) + 50) / 100
+        return depth_map
+
+    def name(self):
+        return 'HandsegCamera'
